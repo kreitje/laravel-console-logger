@@ -1,0 +1,29 @@
+{
+    "name": "kreitje/laravel-console-logger",
+    "description": "Log the output from your console commands into the database",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeff Kreitner",
+            "email": "jeff@hitmyserver.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.2",
+        "illuminate/console": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kreitje\\LaravelConsoleLogger\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kreitje\\LaravelConsoleLogger\\ConsoleCommandLoggerServiceProvider"
+            ]
+        }
+    }
+}
