@@ -2,6 +2,9 @@
 
 namespace Kreitje\LaravelConsoleLogger;
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 trait ConsoleCommandLoggerTrait
 {
     protected $consoleCommandLogs = [];
@@ -17,9 +20,16 @@ trait ConsoleCommandLoggerTrait
         parent::line($string, $style, $verbosity);
     }
 
-    public function __destruct()
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $handle = parent::execute($input, $output);
 
+        $this->logToDatabase();
+        return $handle;
+    }
+
+    public function logToDatabase()
+    {
         if (config('commandlogger.table', '') !== '' && count($this->consoleCommandLogs) > 0) {
             \DB::table(config('commandlogger.table'))->insert([
                 'command' => __CLASS__,
