@@ -3,6 +3,7 @@
 namespace Kreitje\LaravelConsoleLogger;
 
 use Illuminate\Support\ServiceProvider;
+use Kreitje\LaravelConsoleLogger\Commands\CleanupLogCommand;
 
 class ConsoleCommandLoggerServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,9 @@ class ConsoleCommandLoggerServiceProvider extends ServiceProvider
             ], 'migrations');
 
             $this->loadMigrationsFrom(__DIR__.'/../migrations');
+
+            $this->bindCommands();
+            $this->registerCommands();
         }
     }
 
@@ -30,5 +34,20 @@ class ConsoleCommandLoggerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/commandlogger.php', 'commandlogger');
+    }
+
+    public function bindCommands()
+    {
+        $this->app->bind(
+            'command.consolelogger:cleanup',
+            CleanupLogCommand::class
+        );
+    }
+
+    public function registerCommands()
+    {
+        $this->commands([
+            'command.consolelogger:cleanup'
+        ]);
     }
 }
